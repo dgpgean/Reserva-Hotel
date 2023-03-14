@@ -3,7 +3,7 @@ version: "3.7"
 services:
     # image project
     app:
-        container_name: app-laravel
+        container_name: fpm-hotel
         build:
             context: .
             dockerfile: Dockerfile
@@ -12,25 +12,29 @@ services:
         working_dir: /var/www/
         volumes:
             - ./:/var/www
+        depends_on:
+            - redis
         networks:
             - laravel-9
 
     # nginx
     nginx:
-        container_name: app-nginx
+        container_name: hotel-nginx
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - "8888:80"
+            - "8989:80"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
         networks:
             - laravel-9
 
-    # db mysql
+
+
+# db mysql
     mysql:
-        container_name: app-mysql
+        container_name: hotel-mysql
         image: mysql:5.7.22
         restart: unless-stopped
         environment:
@@ -41,11 +45,31 @@ services:
         volumes:
             - ./.docker/mysql/dbdata:/var/lib/mysql
         ports:
-            - "3500:3306"
+            - "3388:3306"
         networks:
             - laravel-9
 
+    # queue
+    queue:
+        container_name: hotel-queue
+        image: especializati/laravel9-app
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+            - app
+        networks:
+            - laravel-9
 
+    # redis
+    redis:
+        container_name: hotel-redis
+        image: redis:latest
+        networks:
+            - laravel-9
 
 networks:
     laravel-9:
+        driver: bridge
