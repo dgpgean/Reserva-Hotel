@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{HomeController, ConfigController};
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('auth');
 
+Route::prefix('admin')->group(function () {
+    Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
+    Route::post('/config', [ConfigController::class, 'store'])->name('config.store');
+});
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');

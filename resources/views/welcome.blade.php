@@ -11,7 +11,7 @@
 @section('content')
     <div class="md:flex md:flex-row flex-col w-full gap-3 flex-nowrap">
 
-        <x-cardInfo
+        <x-home.card-info
             bg-color="bg-[#f99830]"
             card-icon='fas fa-shopping-cart'
             card-title="150"
@@ -19,20 +19,20 @@
         />
 
 
-        <x-cardInfo
+        <x-home.card-info
             bg-color="bg-gradient-success"
             card-icon='fas fa-check-circle'
             card-title="44"
             card-description="User Registrations"
         />
 
-        <x-cardInfo
+        <x-home.card-info
             bg-color="bg-[#00c3ec]"
             card-icon='fas fa-bed'
             card-title="1"
             card-description="Hóspedes"
         />
-        <x-cardInfo
+        <x-home.card-info
             bg-color="bg-[#e2453c]"
             card-icon='fas fa-users'
             card-title="3"
